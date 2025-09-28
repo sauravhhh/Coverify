@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Cover Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Poppins:wght@400;700;900&family=Roboto:wght@400;700;900&family=Oswald:wght@400;700&family=Bebas+Neue&family=Righteous&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <svg class="spotify-icon" viewBox="0 0 24 24">
+                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.301.421-1.02.599-1.559.3z"/>
+            </svg>
+            Spotify Cover Generator
+        </h1>
+        
+        <div class="canvas-container">
+            <canvas id="coverCanvas" width="300" height="300"></canvas>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <div class="control-header">
+                    <i class="fas fa-image control-icon"></i>
+                    <label for="imageUpload">Upload Image</label>
+                </div>
+                <input type="file" id="imageUpload" accept="image/*">
+            </div>
+            
+            <div class="control-group">
+                <div class="control-header">
+                    <i class="fas fa-font control-icon"></i>
+                    <label for="coverText">Cover Text</label>
+                </div>
+                <input type="text" id="coverText" placeholder="Enter your text">
+            </div>
+            
+            <div class="control-group">
+                <div class="control-header">
+                    <i class="fas fa-text-height control-icon"></i>
+                    <label for="fontFamily">Font Family</label>
+                </div>
+                <select id="fontFamily">
+                    <option value="Montserrat">Montserrat</option>
+                    <option value="Poppins">Poppins</option>
+                    <option value="Roboto">Roboto</option>
+                    <option value="Oswald">Oswald</option>
+                    <option value="Bebas Neue">Bebas Neue</option>
+                    <option value="Righteous">Righteous</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-header">
+                    <i class="fas fa-text-width control-icon"></i>
+                    <label for="fontSize">Font Size: <span id="fontSizeValue" class="range-value">40</span>px</label>
+                </div>
+                <input type="range" id="fontSize" min="10" max="80" value="40">
+            </div>
+            
+            <div class="control-group">
+                <div class="control-header">
+                    <i class="fas fa-palette control-icon"></i>
+                    <label>Text Color</label>
+                </div>
+                <input type="color" id="textColor" value="#ffffff">
+                <div class="color-presets">
+                    <div class="color-preset spotify-white" data-color="#ffffff"></div>
+                    <div class="color-preset spotify-black" data-color="#191414"></div>
+                    <div class="color-preset spotify-green" data-color="#1db954"></div>
+                    <div class="color-preset spotify-gray" data-color="#b3b3b3"></div>
+                    <div class="color-preset spotify-blue" data-color="#2d46b9"></div>
+                    <div class="color-preset spotify-purple" data-color="#7b3ff2"></div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-header">
+                    <i class="fas fa-border-style control-icon"></i>
+                    <label>Text Border</label>
+                </div>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" id="textBorderToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span>Enable Text Border</span>
+                </div>
+                
+                <div class="border-options" id="borderOptionsContainer" style="display: none;">
+                    <div class="border-option" data-border="white">White</div>
+                    <div class="border-option" data-border="black">Black</div>
+                </div>
+                
+                <div class="border-width-container" id="borderWidthContainer" style="display: none;">
+                    <div class="control-header">
+                        <i class="fas fa-expand-arrows-alt control-icon"></i>
+                        <label for="borderWidth">Border Width: <span id="borderWidthValue" class="range-value">2</span>px</label>
+                    </div>
+                    <input type="range" id="borderWidth" min="1" max="10" value="2">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-header">
+                    <i class="fas fa-adjust control-icon"></i>
+                    <label>Text Shadow</label>
+                </div>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" id="textShadowToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span>Enable Text Shadow</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-header">
+                    <i class="fas fa-arrows-alt-v control-icon"></i>
+                    <label>Text Position</label>
+                </div>
+                <div class="position-options">
+                    <div class="position-option" data-position="upper">
+                        <i class="fas fa-arrow-up position-icon"></i>
+                        <span>Upper</span>
+                    </div>
+                    <div class="position-option selected" data-position="middle">
+                        <i class="fas fa-minus position-icon"></i>
+                        <span>Middle</span>
+                    </div>
+                    <div class="position-option" data-position="lower">
+                        <i class="fas fa-arrow-down position-icon"></i>
+                        <span>Lower</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <div class="control-header">
+                    <i class="fas fa-magic control-icon"></i>
+                    <label>Effects</label>
+                </div>
+                <div class="effects-container">
+                    <div class="effect-control">
+                        <div class="toggle-container">
+                            <label class="toggle">
+                                <input type="checkbox" id="gradientToggle">
+                                <span class="slider"></span>
+                            </label>
+                            <span>Gradient Overlay</span>
+                        </div>
+                        <input type="color" id="gradientColor" value="#1db954" style="display: none; margin-top: 10px;">
+                    </div>
+                </div>
+            </div>
+            
+            <button id="downloadBtn" class="download-btn">
+                <i class="fas fa-download"></i>
+                Download Cover
+            </button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Made with ❤️ by Sauravhhh
+    </div>
+
+    <script src="script.js"></script>
+</body>
+  </html>
